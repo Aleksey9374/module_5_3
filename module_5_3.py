@@ -4,7 +4,11 @@ __eq__(self, other) - должен возвращать True, если коли�
 возвращать результаты сравнения по соответствующим операторам. Как и в методе __eq__ в
 сравнении участвует кол-во этажей.
 __add__(self, value) - увеличивает кол-во этажей на переданное значение value, возвращает сам объект self.
-__radd__(self, value), __iadd__(self, value) - работают так же как и __add__ (возвращают результат его вызова). '''
+__radd__(self, value), __iadd__(self, value) - работают так же как и __add__ (возвращают результат его вызова). 
+Для более точной логики работы методов __eq__, __add__ и других методов сравнения и арифметики перед выполняемыми действиями убеждаемся
+в принадлежности к типу при помощи функции isinstance:
+isinstance(other, int) - other указывает на объект типа int.
+isinstance(other, House) - other указывает на объект типа House."'''
 
 class House:
     def __init__(self,name,number_of_floors):
@@ -12,23 +16,36 @@ class House:
         self.number_of_floors = number_of_floors
     def __str__(self):
         return f'Название: {self.name}, кол-во этажей: {self.number_of_floors}'
+
 # __eq__
     def __eq__(self, other):
-        return self.number_of_floors == other.number_of_floors
+        if isinstance(other.number_of_floors,int) and isinstance(other,House):
+            return self.number_of_floors == other.number_of_floors
+        else:
+            return self
 # __add__
     def __add__(self, value):
-        self.number_of_floors += value
-        return self
+        if isinstance(value, int):
+            self.number_of_floors += value
+            return self
+        else:
+           return self
 
 # __radd__
     def __radd__(self, value):
-        self.number_of_floors += value
-        return self
+        if isinstance(value, int):
+            self.number_of_floors += value
+            return self
+        else:
+           return self
 
 # __iadd__
     def __iadd__(self, value):
-        self.number_of_floors += value
-        return self
+        if isinstance(value, int):
+            self.number_of_floors += value
+            return self
+        else:
+           return self
 # __lt__
     def __lt__(self, other):
         return self.number_of_floors < other.number_of_floors
